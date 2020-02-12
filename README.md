@@ -32,15 +32,22 @@ npm run parser
 1)번을 선택하면 strings.xml 파일을 excel로 파싱하고 결과를 `results/excel` 디렉토리에 저장합니다.
 target/xml 디렉토리 안에 아래의 구조와 같이 strings.xml 파일이 필요합니다.
 
-`
+```
 1개 이상의 strings.xml 파일이 필요
 target/xml/values/strings.xml
 target/xml/values-ko/strings.xml
 target/xml/values-jp/strings.xml
-`
+```
 
 2)번을 선택할 경우 excel 파일의 내용을 strings.xml 파일로 변환하여 `results/xml` 디렉토리에 저장합니다.
 
-`
+```
 target/excel 디렉토리 안에 1개 이상의 xlsx 파일이 필요
-`
+엑셀 파일의 구조는 아래와 같이 message code 필드와 번역할 메시지로 나누어 지고
+시트별로 번역이 정리되어 있어야 하며 시트 이름은 ko, jp 등과 같이 language code 값으로 등록합니다.
+| code      | message     |
+|-----------|-------------|
+| message_1 | 메시지 번역1 |
+| message_2 | 메시지 번역2 |
+| message_3 | 메시지 번역3 |
+```
