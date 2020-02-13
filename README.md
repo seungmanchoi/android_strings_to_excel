@@ -45,9 +45,19 @@ target/xml/values-jp/strings.xml
 target/excel 디렉토리 안에 1개 이상의 xlsx 파일이 필요
 엑셀 파일의 구조는 아래와 같이 message code 필드와 번역할 메시지로 나누어 지고
 시트별로 번역이 정리되어 있어야 하며 시트 이름은 ko, jp 등과 같이 language code 값으로 등록합니다.
-| code      | message     |
-|-----------|-------------|
-| message_1 | 메시지 번역1 |
-| message_2 | 메시지 번역2 |
-| message_3 | 메시지 번역3 |
+| code            | message                 |
+|-----------------|-------------------------|
+| message_1       | 메시지 번역1              |
+| message_2       | 메시지 번역2              |
+| message_3       | 메시지 번역3              |
+| messages<array> | 번역1,번역2,번역3,번역4    |
+
+아래와 같은 구조를 만들 경우에는 code 부분에 '<array>'로 표시하고 
+item으로 들어갈 번역들은 ',' 콤마로 구분합니다.
+<string-array name="messages">
+    <item>번역1</item>
+    <item>번역2</item>
+    <item>번역3</item>
+    <item>번역4</item>
+</string-array>
 ```
