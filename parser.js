@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const Excel = require('exceljs');
 const moment = require('moment');
 const xml2js = require('xml2js');
@@ -44,6 +45,7 @@ inquirer.prompt([{
 
             xml2js.parseString(xml, function (err, result) {
               var list = result.resources.string;
+              var stringArrayList = result.resources['string-array'];
 
               worksheet.columns = [
                 { header: 'code', key: 'key', width: 30 },
@@ -55,6 +57,15 @@ inquirer.prompt([{
                   key: list[i].$.name,
                   content: list[i]._,
                 });
+              }
+
+              if (stringArrayList && stringArrayList.length > 0) {
+                for (var i = 0, max = stringArrayList.length; i < max; i += 1) {
+                  worksheet.addRow({
+                    key: `${stringArrayList[i].$.name}<array>`,
+                    content: stringArrayList[i].item ? stringArrayList[i].item.join() : '',
+                  });
+                }
               }
             });
           }
@@ -120,24 +131,45 @@ inquirer.prompt([{
                   const string = {
                     $: {
                       name: ''
-                    },
-                    _: ''
+                    }
                   };
+                  let isStringArrays = false;
 
                   row.eachCell((cell, cellNumber) => {
                     const value = cell.value;
 
                     switch(cellNumber) {
                       case 1 : // code
-                        string['$']['name'] = value;
+                        if (value.includes('<array>')) {
+                          isStringArrays = true;
+                          string['$']['name'] = value.replace(/(<array>| )/ig,"");
+                        } else {
+                          string['$']['name'] = value;
+                        }
                         break;
                       case 2 : // content
-                        string['_'] = value;
+                        if (isStringArrays) {
+                          const items = value.split(',');
+                          string['item'] = items || [];
+
+                        } else {
+                          string['_'] = value;
+                        }
+
                         break;
                     }
                   });
 
-                  xmlRoot.resources.push({ string });
+                  if (isStringArrays) {
+
+                    console.log(string);
+                    xmlRoot.resources.push({
+                      ['string-array']: string,
+                    });
+                  } else {
+                    xmlRoot.resources.push({ string });
+                  }
+
                 }
               })
 
